@@ -1,0 +1,7 @@
+skip_list:
+  - role-name
+  - yaml[line-length]
+
+exclude_paths:
+  - terraform
+  - ansible/ansible_collections

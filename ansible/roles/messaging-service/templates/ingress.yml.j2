@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: msgsvc
+  namespace: msgsvc
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/load-balancer-name: msgsvc-ingress-{{ env }}
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/subnets: main-{{ env }}-public-{{ aws_region }}a, main-{{ env }}-public-{{ aws_region }}b
+    alb.ingress.kubernetes.io/target-type: ip
+    external-dns.alpha.kubernetes.io/hostname: msgsvc.{{ public_domain }}
+spec:
+  rules:
+  - host: msgsvc.{{ public_domain }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: msgsvc-http
+            port:
+              name: http

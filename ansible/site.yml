@@ -1,0 +1,33 @@
+---
+- hosts: all
+  gather_facts: true
+  become: true
+  roles:
+    - role: common
+      tags: common
+    - role: kernel
+      tags:
+        - kernel
+        - never
+    - role: user-mgmt
+      tags: user-mgmt
+
+- hosts: localhost
+  gather_facts: true
+  tasks:
+    - name: add localhost to inventory
+      add_host:
+        name: "{{ inventory_hostname }}"
+        groups:
+          - "{{ ansible_inventory_sources[0] | basename }}"
+        ansible_connection: local
+        ansible_python_interpreter: "{{ ansible_playbook_python }}"
+      tags: always
+
+- hosts: localhost
+  gather_facts: true
+  roles:
+    - role: messaging-service
+      tags: messaging-service
+    - role: web
+      tags: web

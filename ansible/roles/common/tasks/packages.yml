@@ -1,0 +1,72 @@
+---
+- name: Copy config of disable auto upgrade
+  ansible.builtin.copy:
+    src: files/20auto-upgrades
+    dest: /etc/apt/apt.conf.d/20auto-upgrades
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Fix broken
+  ansible.builtin.apt:
+    state: fixed
+
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+  changed_when: false
+
+- name: Hold kernel packages
+  ansible.builtin.dpkg_selections:
+    name: "{{ item }}"
+    selection: hold
+  with_items:
+    - "linux-generic"
+    - "linux-headers-generic"
+    - "linux-image-generic"
+  when:
+    - presetup_mode is defined and presetup_mode == "upgrade"
+
+- name: Upgrade all packages to the latest version
+  ansible.builtin.apt:
+    name: "*"
+    state: latest # noqa package-latest
+    force_apt_get: true
+  when:
+    - presetup_mode is defined and presetup_mode == "upgrade"
+
+- name: Unhold kernel packages
+  ansible.builtin.dpkg_selections:
+    name: "{{ item }}"
+    selection: install
+  with_items:
+    - "linux-generic"
+    - "linux-headers-generic"
+    - "linux-image-generic"
+  when:
+    - presetup_mode is defined and presetup_mode == "upgrade"
+
+- name: Gather the package facts
+  ansible.builtin.package_facts:
+    manager: auto
+  when: ansible_facts.package_facts is not defined
+
+- name: Install packages prerequisites
+  ansible.builtin.apt:
+    name: "{{ item.name }}"
+    state: "{{ 'latest' if presetup_mode | default('') == 'upgrade' or (item.min_version is defined and ansible_facts.packages[item.name][0]['version'] is version(item.min_version, '<')) else 'present' }}"
+    update_cache: true
+    cache_valid_time: 3600
+    install-recommends: false
+  retries: 3
+  delay: 5
+  loop: "{{ required_packages + custom_packages | default([]) }}"
+
+- name: Install pip
+  ansible.builtin.pip:
+    name: pip
+    state: "{{ 'latest' if presetup_mode | default('') == 'upgrade' else 'present' }}"
+
+- name: Make python3 default interpreter
+  ansible.builtin.command: update-alternatives --install /usr/bin/python python /usr/bin/python3 1
+  when: ansible_python_version < "3"

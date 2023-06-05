@@ -1,0 +1,13 @@
+---
+ansible_port: 5161
+
+project: "erlytalk"
+env: "dev"
+
+aws_region: "us-east-1"
+
+internal_domain: "erlytalk.dev"
+
+public_domain: "erlytalk.myclnet.com"
+
+msgsvc_cluster_secret: "TNxet6NHshdM48NT"

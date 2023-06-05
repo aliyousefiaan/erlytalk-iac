@@ -1,0 +1,25 @@
+---
+- name: Copy user mgmt sudoers
+  ansible.builtin.copy:
+    src: files/usermgmt-sudoers
+    dest: /etc/sudoers.d/
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Create groups
+  ansible.builtin.group:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ usermgmt_groups }}"
+
+- ansible.builtin.include_tasks: "add_users.yml"
+
+- ansible.builtin.include_tasks: "remove_users.yml"
+
+- name: Add ssh keys to root user
+  ansible.posix.authorized_key:
+    user: "root"
+    key: "{{ (item)['keys'] }}"
+  when: item.add_key_to_root | default(false)
+  loop: "{{ usermgmt_users | list }}"

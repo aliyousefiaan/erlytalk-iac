@@ -1,0 +1,28 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+ansible = ">=2.10,<2.11"
+netaddr = "*"
+six = "*"
+pbr = ">=2.0.0,!=2.1.0"
+cryptography = ">=2.1"
+jmespath = ">=0.9.3"
+PyYAML = ">=3.12"
+Jinja2 = ">=2.10"
+ansible-lint = "*"
+PyMySQL = "*"
+passlib = "*"
+"ruamel.yaml" = "*"
+kubernetes = ">=12.0.0"
+requests-oauthlib = "*"
+jsonpatch = "*"
+MarkupSafe = "*"
+boto3 = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.8"

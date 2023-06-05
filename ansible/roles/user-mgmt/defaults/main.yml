@@ -1,0 +1,11 @@
+---
+usermgmt_groups:
+  - infra
+
+usermgmt_users:
+  - name: "Ali Yousefian"
+    username: "ali-yousefian"
+    keys: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDc1asp/d6ImXmNmunD/POM1AN2/8HT+dvnwzombVlk0Y8tVTOFbSM12xmQNtVZ3M4WC+rBk2HHBd7jqojhG12MONmvh2SLUpQbDzmrf+HvjHs1vkDLYa3MRSwXXPoMLRGBA4dqMVohesh/qL93MVneHsRzRLqMo9wcf7jlO2pdwm1SOm5vmXKLD8hx7eEvaYzeiyhp+JGGLaanCzv5zOS5i+TdcWstDBh+zJTsiNxtcNH12KsQqldhVWDhvDVLgKgwDJMKImtP+csUW2FNhxa1Xo9/cj1es5GrUTM81lGsAbUqar7MNm9VvcDAQkSVNY2VD3f9A2JvUEcU4mLSO3a69NMShlR8YEK4s0kghMy7GD5Y96Ehg+SoDvinwJ8Vi2JvdsX7nycQ1w7PVnUfZMMtvKgk/z3eBve1Ua30jmF5wzcw/HzEg/uszh1Iy0BIF9WJpKcN9v6yIBfMUqOhFUgRBp/PlpcS2JWpPvlm0qJT9jgjn6Oni3GcruPl5UN4H0UUcRlW0iGqJ5PFP0DUZC4uVMGHXqCmrwnZq9wtzOKPnliDdJ9bz0VFY4jM+Z3DtofonEnLbINhThMD1mXARhvrGuYBrDSuoKk8jZwqLUDhHPEspEizfs772D6/IDDx7Yb96ZhY++vHgG6UwZXfmIYeN/XCcC+kalAwFVbd8/4P3w== AliYousefian
+    shell: "/bin/bash"
+    group: "infra"
+    add_key_to_root: true

@@ -1,0 +1,29 @@
+---
+- name: Modprobe hardening
+  ansible.builtin.copy:
+    src: files/modprobe-blacklist.conf
+    dest: /etc/modprobe.d/modprobe-blacklist.conf
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Permissions and verifications
+  ansible.builtin.file:
+    path: "{{ item.name }}"
+    mode: "{{ item.mode }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+  loop: "{{ default_perms }}"
+
+- name: Restrict core dumps
+  ansible.builtin.copy:
+    src: files/limits.conf
+    dest: /etc/security/limits.d/
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Remove the unnecessary packages
+  ansible.builtin.apt:
+    pkg: "{{ unnecessary_packages }}"
+    state: absent

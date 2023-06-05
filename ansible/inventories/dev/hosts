@@ -1,0 +1,11 @@
+[all:children]
+dev
+
+[dev:children]
+mgmt
+ec2
+
+[mgmt]
+mgmt01 ansible_host=mgmt.infra.erlytalk.myclnet.com
+
+[ec2]
