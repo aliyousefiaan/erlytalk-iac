@@ -1,0 +1,19 @@
+---
+- name: Upgrade kernel to the lts
+  ansible.builtin.apt:
+    pkg:
+      - linux-generic={{ kernel_version }}
+      - linux-headers-generic={{ kernel_version }}
+      - linux-image-generic={{ kernel_version }}
+    update_cache: true
+    state: present
+  notify:
+    - Upgrade grub
+    - Reboot
+
+- name: Remove dependencies that are no longer required
+  ansible.builtin.apt:
+    autoremove: true
+
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers

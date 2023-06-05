@@ -1,0 +1,21 @@
+[submodule "ansible/ansible_collections/community/docker"]
+	path = ansible/ansible_collections/community/docker
+	url = https://github.com/ansible-collections/community.docker.git
+[submodule "ansible/ansible_collections/community/general"]
+	path = ansible/ansible_collections/community/general
+	url = https://github.com/ansible-collections/community.general.git
+[submodule "ansible/ansible_collections/ansible/posix"]
+	path = ansible/ansible_collections/ansible/posix
+	url = https://github.com/ansible-collections/ansible.posix.git
+[submodule "ansible/ansible_collections/kubernetes/core"]
+	path = ansible/ansible_collections/kubernetes/core
+	url = https://github.com/ansible-collections/kubernetes.core.git
+[submodule "ansible/ansible_collections/community/crypto"]
+	path = ansible/ansible_collections/community/crypto
+	url = https://github.com/ansible-collections/community.crypto.git
+[submodule "ansible/ansible_collections/amazon/aws"]
+	path = ansible/ansible_collections/amazon/aws
+	url = https://github.com/ansible-collections/amazon.aws.git
+[submodule "ansible/ansible_collections/community/aws"]
+	path = ansible/ansible_collections/community/aws
+	url = https://github.com/ansible-collections/community.aws.git

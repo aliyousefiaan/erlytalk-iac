@@ -1,0 +1,109 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: msgsvc
+  namespace: msgsvc
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: msgsvc
+  template:
+    metadata:
+      labels:
+        app: msgsvc
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchLabels:
+                  app: msgsvc
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              topologyKey: failure-domain.beta.kubernetes.io/zone
+              labelSelector:
+                matchLabels:
+                  app: msgsvc
+      containers:
+      - name: msgsvc
+        image: aliyousefian/erlytalk-msgsvc:latest
+        imagePullPolicy: Always
+        ports:
+        - name: http-port
+          containerPort: 8080
+        env:
+          - name: NODE_IP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+          - name: MSGSVC_CLUSTER_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: msgsvc-config
+                key: cluster_secret
+          - name: MSGSVC_HTTP_BIND_ADDRESS
+            value: "0.0.0.0"
+          - name: MSGSVC_HTTP_BIND_PORT
+            value: "8080"
+        resources:
+          limits:
+            cpu: "1"
+            memory: "1Gi"
+          requests:
+            cpu: "500m"
+            memory: "512Mi"
+        readinessProbe:
+          httpGet:
+            path: /
+            port: http-port
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        livenessProbe:
+          httpGet:
+            path: /
+            port: http-port
+          initialDelaySeconds: 30
+          periodSeconds: 10
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: msgsvc
+  namespace: msgsvc
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: msgsvc
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: msgsvc
+  namespace: msgsvc
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: msgsvc
+  minReplicas: 2
+  maxReplicas: 5
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 50
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 60

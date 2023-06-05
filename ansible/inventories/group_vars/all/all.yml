@@ -1,0 +1,3 @@
+ansible_user: "root"
+
+kernel_version: "5.15*"

@@ -1,0 +1,2 @@
+---
+ansible_ssh_common_args: '-o ProxyCommand="ssh -p 5161 -W %h:%p -q mgmt.infra.erlytalk.myclnet.com"'

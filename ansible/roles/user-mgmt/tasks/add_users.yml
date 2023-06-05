@@ -1,0 +1,16 @@
+---
+- name: Create users
+  ansible.builtin.user:
+    name: "{{ item.username }}"
+    state: "{{ item.state | default('present') }}"
+    shell: "{{ item.shell | default('/bin/bash') }}"
+    groups: "{{ item.group }}"
+  when: item.username is defined
+  loop: "{{ usermgmt_users | list }}"
+
+- name: Add ssh keys to users
+  ansible.posix.authorized_key:
+    user: "{{ item.username }}"
+    key: "{{ (item)['keys'] }}"
+    exclusive: true
+  loop: "{{ usermgmt_users | list }}"

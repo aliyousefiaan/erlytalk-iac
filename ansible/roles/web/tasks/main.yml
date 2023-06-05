@@ -1,0 +1,24 @@
+---
+- name: Create web namespace
+  kubernetes.core.k8s:
+    name: web
+    kind: Namespace
+    kubeconfig: "~/.kube/{{ project }}-eks-main-{{ env }}"
+
+- name: Deploy deployment.yml
+  kubernetes.core.k8s:
+    state: present
+    template: 'deployment.yml.j2'
+    kubeconfig: "~/.kube/{{ project }}-eks-main-{{ env }}"
+
+- name: Deploy service.yml
+  kubernetes.core.k8s:
+    state: present
+    template: 'service.yml.j2'
+    kubeconfig: "~/.kube/{{ project }}-eks-main-{{ env }}"
+
+- name: Deploy ingress.yml
+  kubernetes.core.k8s:
+    state: present
+    template: 'ingress.yml.j2'
+    kubeconfig: "~/.kube/{{ project }}-eks-main-{{ env }}"

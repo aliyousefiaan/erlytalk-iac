@@ -1,0 +1,36 @@
+---
+- name: Create helloworld namespace
+  kubernetes.core.k8s:
+    name: helloworld
+    kind: Namespace
+    kubeconfig: "~/.kube/{{ project }}-eks-main-{{ env }}"
+
+- name: Deploy helloworld-v1.yml
+  kubernetes.core.k8s:
+    state: present
+    template: 'helloworld-v1.yml.j2'
+    kubeconfig: "~/.kube/{{ project }}-eks-main-{{ env }}"
+
+- name: Deploy helloworld-v2.yml
+  kubernetes.core.k8s:
+    state: present
+    template: 'helloworld-v2.yml.j2'
+    kubeconfig: "~/.kube/{{ project }}-eks-main-{{ env }}"
+
+- name: Deploy helloworld-int-ingress.yml
+  kubernetes.core.k8s:
+    state: present
+    template: 'helloworld-int-ingress.yml.j2'
+    kubeconfig: "~/.kube/{{ project }}-eks-main-{{ env }}"
+
+- name: Deploy helloworld-pub-ingress.yml
+  kubernetes.core.k8s:
+    state: present
+    template: 'helloworld-pub-ingress.yml.j2'
+    kubeconfig: "~/.kube/{{ project }}-eks-main-{{ env }}"
+
+- name: Deploy hello-ebs.yml
+  kubernetes.core.k8s:
+    state: present
+    template: 'hello-ebs.yml.j2'
+    kubeconfig: "~/.kube/{{ project }}-eks-main-{{ env }}"

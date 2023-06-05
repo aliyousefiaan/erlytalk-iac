@@ -1,0 +1,34 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: helloworld-pub-ingress
+  namespace: helloworld
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/load-balancer-name: helloworld-pub-ingress-{{ env }}
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/subnets: main-{{ env }}-public-{{ aws_region }}a, main-{{ env }}-public-{{ aws_region }}b
+    alb.ingress.kubernetes.io/target-type: ip
+    external-dns.alpha.kubernetes.io/hostname: helloworldv1.{{ public_domain }}, helloworldv2.{{ public_domain }}
+spec:
+  rules:
+  - host: helloworldv1.{{ public_domain }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: helloworld-v1
+            port:
+              name: http
+  - host: helloworldv2.{{ public_domain }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: helloworld-v2
+            port:
+              name: http

@@ -1,0 +1,30 @@
+---
+- name: Get users info from passwd
+  ansible.builtin.getent:
+    database: passwd
+
+- name: Determine existing users
+  ansible.builtin.set_fact:
+    existing_users: "{{ existing_users | default([]) | union([item.key]) }}"
+  when:
+    - "'/home' in (item.value | join(':'))"
+    - "'nologin' not in (item.value | join(':'))"
+  loop: "{{ lookup('dict', getent_passwd) }}"
+
+- name: Create defined users list
+  ansible.builtin.set_fact:
+    user_list: "{{ user_list | default([]) + [item.username] }}"
+  loop: "{{ usermgmt_users | list }}"
+
+- name: Kill undefined users process
+  ansible.builtin.command: pkill -9 -U {{ item }}
+  loop: "{{ existing_users | difference(user_list) | list }}"
+  changed_when: false
+  failed_when: false
+
+- name: Remove undefined users
+  ansible.builtin.user:
+    name: "{{ item }}"
+    state: absent
+    remove: true
+  loop: "{{ existing_users | difference(user_list) | list }}"

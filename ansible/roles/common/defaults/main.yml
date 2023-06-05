@@ -1,0 +1,116 @@
+---
+required_packages:
+  - name: python3
+  - name: net-tools
+  - name: ipset
+  - name: python3-setuptools
+  - name: python3-pip
+  - name: python3-apt
+  - name: vim
+  - name: curl
+  - name: htop
+  - name: tcpdump
+  - name: screen
+  - name: iftop
+  - name: tmux
+  - name: bmon
+  - name: iperf
+  - name: sysstat
+  - name: ethtool
+  - name: mlocate
+  - name: thin-provisioning-tools
+  - name: conntrack
+  - name: stress
+  - name: cpufrequtils
+  - name: nano
+  - name: wget
+  - name: rsync
+  - name: nload
+  - name: traceroute
+  - name: tree
+  - name: zip
+  - name: unzip
+  - name: dnsutils
+  - name: iptraf-ng
+  - name: iotop
+  - name: nmon
+  - name: p7zip
+  - name: p7zip-full
+  - name: bzip2
+  - name: pipenv
+  - name: iputils-ping
+  - name: cron
+  - name: logrotate
+  - name: awscli
+
+sysctl_common_tuning:
+  - name: kernel.panic
+    value: "5"
+  - name: kernel.sched_schedstats
+    value: "1"
+
+default_perms:
+  - name: /etc/crontab
+    owner: root
+    group: root
+    mode: "0644"
+  - name: /etc/cron.hourly
+    owner: root
+    group: root
+    mode: "0744"
+  - name: /etc/cron.daily
+    owner: root
+    group: root
+    mode: "0744"
+  - name: /etc/cron.weekly
+    owner: root
+    group: root
+    mode: "0744"
+  - name: /etc/cron.monthly
+    owner: root
+    group: root
+    mode: "0744"
+  - name: /etc/cron.d
+    owner: root
+    group: root
+    mode: "0744"
+  - name: /etc/passwd
+    owner: root
+    group: root
+    mode: "0644"
+  - name: /etc/group
+    owner: root
+    group: root
+    mode: "0644"
+  - name: /etc/shadow
+    owner: root
+    group: root
+    mode: "0600"
+  - name: /etc/gshadow
+    owner: root
+    group: root
+    mode: "0600"
+  - name: /etc/passwd
+    owner: root
+    group: root
+    mode: "0644"
+  - name: /etc/fstab
+    owner: root
+    group: root
+    mode: "0644"
+  - name: /boot/grub/grub.cfg
+    owner: root
+    group: root
+    mode: "0600"
+
+unnecessary_packages:
+  - tftp
+  - xinetd
+  - nis
+  - yp-tools
+  - atftp
+  - tftp-hpa
+  - rsh-server
+  - rsh-redone-server
+
+timezone: "UTC"
